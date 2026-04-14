@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dive Entry — Springboard & Platform Tracker</title>
+<meta name="description" content="The essential companion for competitive springboard and platform divers, their families, and coaches. Score competitions poolside in under 2 minutes.">
+<meta property="og:title" content="Dive Entry — Springboard & Platform Tracker">
+<meta property="og:description" content="Score · Track · Compete. The first app built for competitive diving families.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A2540;
+    --navy-deep: #061B2E;
+    --navy-light: #0D3350;
+    --teal: #00D4AA;
+    --teal-dim: rgba(0, 212, 170, 0.15);
+    --blue: #1B6B93;
+    --white: #FFFFFF;
+    --white-60: rgba(255,255,255,0.6);
+    --white-40: rgba(255,255,255,0.4);
+    --white-15: rgba(255,255,255,0.15);
+    --white-08: rgba(255,255,255,0.08);
+    --white-04: rgba(255,255,255,0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--navy-deep);
+    color: var(--white);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Diagonal accent lines (matching app) ── */
+  .bg-accents {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .bg-accents::before, .bg-accents::after {
+    content: ''; position: absolute;
+    background: linear-gradient(135deg, var(--teal) 0%, transparent 60%);
+    opacity: 0.03;
+  }
+  .bg-accents::before {
+    width: 120%; height: 600px; top: -200px; left: -10%;
+    transform: rotate(-8deg);
+  }
+  .bg-accents::after {
+    width: 120%; height: 400px; bottom: -100px; right: -10%;
+    transform: rotate(-8deg);
+    background: linear-gradient(135deg, transparent 40%, var(--blue) 100%);
+  }
+
+  section { position: relative; z-index: 1; }
+
+  /* ── Hero ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 60px 24px 80px;
+    background: radial-gradient(ellipse at 50% 0%, var(--navy-light) 0%, var(--navy-deep) 70%);
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--teal);
+    padding: 8px 20px;
+    border: 1px solid rgba(0, 212, 170, 0.25);
+    margin-bottom: 40px;
+    clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+    background: var(--teal-dim);
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-badge .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--teal);
+    animation: pulse 2s ease infinite;
+  }
+
+  .hero-logo {
+    width: 120px; height: 120px;
+    margin-bottom: 32px;
+    animation: fadeUp 0.6s ease 0.1s both;
+  }
+  .hero-logo svg {
+    width: 100%; height: 100%;
+  }
+
+  .hero h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(48px, 8vw, 80px);
+    font-weight: 700;
+    letter-spacing: 6px;
+    line-height: 1;
+    margin-bottom: 12px;
+    animation: fadeUp 0.6s ease 0.15s both;
+  }
+
+  .hero-tagline {
+    font-size: 14px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--white-40); font-weight: 400;
+    margin-bottom: 32px;
+    animation: fadeUp 0.6s ease 0.2s both;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(17px, 2.5vw, 21px);
+    color: var(--white-60); font-weight: 300;
+    max-width: 520px; line-height: 1.6;
+    margin-bottom: 48px;
+    animation: fadeUp 0.6s ease 0.25s both;
+  }
+
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 16px 36px;
+    background: var(--teal);
+    color: var(--navy-deep);
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px; font-weight: 600;
+    text-decoration: none;
+    clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+    transition: transform 0.2s, filter 0.2s;
+    animation: fadeUp 0.6s ease 0.3s both;
+  }
+  .hero-cta:hover { transform: translateY(-2px); filter: brightness(1.1); }
+  .hero-cta svg { width: 20px; height: 20px; }
+
+  .hero-appstore {
+    margin-top: 16px;
+    animation: fadeUp 0.6s ease 0.35s both;
+  }
+  .hero-appstore img {
+    height: 44px;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+  }
+  .hero-appstore img:hover { opacity: 0.8; }
+  .hero-appstore .coming { 
+    font-size: 12px; color: var(--white-40); 
+    margin-top: 8px; letter-spacing: 1px;
+  }
+
+  /* ── Stat bar ── */
+  .stat-bar {
+    display: flex; justify-content: center; gap: 48px;
+    padding: 48px 24px;
+    border-top: 1px solid var(--white-08);
+    border-bottom: 1px solid var(--white-08);
+    background: var(--white-04);
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-value {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 36px; font-weight: 700;
+    color: var(--teal);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 13px; color: var(--white-40);
+    margin-top: 4px; letter-spacing: 0.5px;
+  }
+
+  /* ── Features ── */
+  .features {
+    padding: 100px 24px;
+    max-width: 1000px; margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--teal); text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700; text-align: center;
+    margin-bottom: 60px; letter-spacing: 1px;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .feature-card {
+    padding: 32px 28px;
+    background: var(--white-04);
+    border: 1px solid var(--white-08);
+    clip-path: polygon(16px 0, 100% 0, calc(100% - 16px) 100%, 0 100%);
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .feature-card:hover {
+    background: var(--white-08);
+    border-color: var(--white-15);
+  }
+
+  .feature-icon {
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--teal-dim);
+    clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+
+  .feature-card h3 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 20px; font-weight: 600;
+    letter-spacing: 0.5px; margin-bottom: 8px;
+  }
+
+  .feature-card p {
+    font-size: 14px; color: var(--white-40);
+    line-height: 1.6;
+  }
+
+  .feature-tag {
+    display: inline-block;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--navy-deep); background: var(--teal);
+    padding: 3px 10px; margin-top: 12px;
+    clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  }
+
+  .feature-free {
+    display: inline-block;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--teal); 
+    border: 1px solid rgba(0,212,170,0.3);
+    padding: 3px 10px; margin-top: 12px;
+    clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  }
+
+  /* ── Pricing ── */
+  .pricing {
+    padding: 100px 24px;
+    background: var(--white-04);
+    border-top: 1px solid var(--white-08);
+  }
+
+  .pricing-cards {
+    display: flex; justify-content: center;
+    gap: 20px; flex-wrap: wrap;
+    max-width: 700px; margin: 0 auto;
+  }
+
+  .price-card {
+    flex: 1; min-width: 260px; max-width: 320px;
+    padding: 36px 28px;
+    background: var(--navy);
+    border: 1px solid var(--white-08);
+    clip-path: polygon(16px 0, 100% 0, calc(100% - 16px) 100%, 0 100%);
+    text-align: center;
+  }
+  .price-card.featured {
+    border-color: var(--teal);
+    background: linear-gradient(180deg, var(--navy-light) 0%, var(--navy) 100%);
+    position: relative;
+  }
+
+  .price-card h3 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 22px; font-weight: 600;
+    margin-bottom: 8px; letter-spacing: 1px;
+  }
+
+  .price-card .price {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 44px; font-weight: 700;
+    color: var(--teal); line-height: 1;
+  }
+  .price-card .price span {
+    font-size: 16px; color: var(--white-40); font-weight: 400;
+  }
+  .price-card .price-note {
+    font-size: 13px; color: var(--white-40);
+    margin-top: 4px; margin-bottom: 24px;
+  }
+
+  .price-features {
+    text-align: left; list-style: none;
+    margin-bottom: 28px;
+  }
+  .price-features li {
+    font-size: 14px; color: var(--white-60);
+    padding: 8px 0;
+    border-bottom: 1px solid var(--white-08);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .price-features li::before {
+    content: '✓'; color: var(--teal); font-weight: 600; font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .price-cta {
+    display: inline-block; width: 100%;
+    padding: 14px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px; font-weight: 600;
+    text-decoration: none; text-align: center;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    transition: transform 0.2s, filter 0.2s;
+  }
+  .price-cta:hover { transform: translateY(-1px); filter: brightness(1.1); }
+  .price-cta.primary { background: var(--teal); color: var(--navy-deep); }
+  .price-cta.secondary { background: var(--white-08); color: var(--white); border: 1px solid var(--white-15); }
+
+  /* ── For Coaches ── */
+  .coaches {
+    padding: 100px 24px;
+    max-width: 700px; margin: 0 auto;
+    text-align: center;
+  }
+  .coaches-body {
+    font-size: 17px; color: var(--white-60);
+    line-height: 1.8; max-width: 560px;
+    margin: 0 auto 40px;
+  }
+  .coaches-highlight {
+    display: inline-block; padding: 20px 32px;
+    background: var(--white-04);
+    border: 1px solid var(--white-08);
+    clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 24px; font-weight: 600;
+    color: var(--teal);
+  }
+
+  /* ── Footer ── */
+  footer {
+    padding: 60px 24px;
+    border-top: 1px solid var(--white-08);
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 20px; font-weight: 700;
+    letter-spacing: 3px; margin-bottom: 16px;
+  }
+  .footer-links {
+    display: flex; justify-content: center;
+    gap: 24px; margin-bottom: 24px; flex-wrap: wrap;
+  }
+  .footer-links a {
+    font-size: 14px; color: var(--white-40);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--teal); }
+  .footer-copy {
+    font-size: 12px; color: var(--white-40);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── Scroll reveal ── */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .reveal.visible {
+    opacity: 1; transform: translateY(0);
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 600px) {
+    .stat-bar { gap: 32px; padding: 36px 24px; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .pricing-cards { flex-direction: column; align-items: center; }
+    .price-card { max-width: 100%; }
+    .hero { padding: 40px 20px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-accents"></div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    Now Available on iPhone
+  </div>
+
+  <!-- Inline SVG logo — angular diving figure -->
+  <div class="hero-logo">
+    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="tealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#00D4AA"/>
+          <stop offset="100%" stop-color="#1B6B93"/>
+        </linearGradient>
+      </defs>
+      <polygon points="60,8 112,36 112,84 60,112 8,84 8,36" fill="none" stroke="url(#tealGrad)" stroke-width="1.5" opacity="0.3"/>
+      <polygon points="60,20 100,42 100,78 60,100 20,78 20,42" fill="rgba(0,212,170,0.06)" stroke="url(#tealGrad)" stroke-width="1"/>
+      <!-- Stylised diver figure -->
+      <circle cx="60" cy="38" r="6" fill="#00D4AA"/>
+      <line x1="60" y1="44" x2="60" y2="62" stroke="#00D4AA" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="60" y1="50" x2="48" y2="42" stroke="#00D4AA" stroke-width="2" stroke-linecap="round"/>
+      <line x1="60" y1="50" x2="72" y2="42" stroke="#00D4AA" stroke-width="2" stroke-linecap="round"/>
+      <line x1="60" y1="62" x2="50" y2="76" stroke="#00D4AA" stroke-width="2" stroke-linecap="round"/>
+      <line x1="60" y1="62" x2="70" y2="76" stroke="#00D4AA" stroke-width="2" stroke-linecap="round"/>
+      <!-- Water line -->
+      <path d="M30,86 Q45,82 60,86 Q75,90 90,86" fill="none" stroke="#1B6B93" stroke-width="1.5" opacity="0.5"/>
+      <path d="M30,90 Q45,86 60,90 Q75,94 90,90" fill="none" stroke="#1B6B93" stroke-width="1" opacity="0.3"/>
+    </svg>
+  </div>
+
+  <h1>DIVE ENTRY</h1>
+  <div class="hero-tagline">Score · Track · Compete</div>
+  <p class="hero-subtitle">
+    The essential companion for competitive springboard and platform divers, their families, and coaches.
+  </p>
+
+  <a href="#features" class="hero-cta">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    Explore Features
+  </a>
+
+  <div class="hero-appstore">
+    <p class="coming" style="margin-top: 24px;">Coming soon to the App Store</p>
+  </div>
+</section>
+
+<!-- ═══ STATS ═══ -->
+<section class="stat-bar">
+  <div class="stat reveal">
+    <div class="stat-value">&lt;2 min</div>
+    <div class="stat-label">Competition setup</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-value">600+</div>
+    <div class="stat-label">Dives in the table</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-value">3–7</div>
+    <div class="stat-label">Judge scoring</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-value">3</div>
+    <div class="stat-label">Diver profiles</div>
+  </div>
+</section>
+
+<!-- ═══ FEATURES ═══ -->
+<section class="features" id="features">
+  <div class="section-label reveal">Features</div>
+  <h2 class="section-title reveal">Built for the Poolside</h2>
+
+  <div class="feature-grid">
+    <div class="feature-card reveal">
+      <div class="feature-icon">🏆</div>
+      <h3>Run Competitions</h3>
+      <p>Set up and score a live competition in under 2 minutes. Add divers, choose board and judge count, score round by round with automatic DD calculations and live rankings.</p>
+      <span class="feature-free">Free</span>
+    </div>
+
+    <div class="feature-card reveal">
+      <div class="feature-icon">📋</div>
+      <h3>Complete Dive Table</h3>
+      <p>The full FINA dive table in your pocket. Look up any dive code instantly. Compare difficulty ratings across 1m, 3m, and platform.</p>
+      <span class="feature-free">Free</span>
+    </div>
+
+    <div class="feature-card reveal">
+      <div class="feature-icon">📊</div>
+      <h3>Session History</h3>
+      <p>Log every session — competition or practice. Track scores across all boards and watch progress over time with detailed history.</p>
+      <span class="feature-tag">Family</span>
+    </div>
+
+    <div class="feature-card reveal">
+      <div class="feature-icon">📖</div>
+      <h3>Training Journal</h3>
+      <p>Track mood, energy, sleep, confidence, and soreness. Built with young athletes in mind — performance-focused, never body-focused.</p>
+      <span class="feature-tag">Family</span>
+    </div>
+
+    <div class="feature-card reveal">
+      <div class="feature-icon">🎖️</div>
+      <h3>Achievements</h3>
+      <p>Unlock milestones as your diver progresses. From first competition dive to mastering all five groups — every milestone celebrated.</p>
+      <span class="feature-tag">Family</span>
+    </div>
+
+    <div class="feature-card reveal">
+      <div class="feature-icon">📄</div>
+      <h3>Competition Results</h3>
+      <p>Subscribers receive results from registered competitions pushed directly to their phone. Your diver's competition record, always up to date.</p>
+      <span class="feature-tag">Coming Soon</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRICING ═══ -->
+<section class="pricing" id="pricing">
+  <div class="section-label reveal">Pricing</div>
+  <h2 class="section-title reveal">Simple, Family-Friendly Pricing</h2>
+
+  <div class="pricing-cards">
+    <div class="price-card reveal">
+      <h3>FREE</h3>
+      <div class="price">£0</div>
+      <div class="price-note">Forever</div>
+      <ul class="price-features">
+        <li>Full FINA dive table</li>
+        <li>Dive comparison tool</li>
+        <li>Competition scorer</li>
+        <li>1 diver profile</li>
+      </ul>
+      <a href="#" class="price-cta secondary">Download Free</a>
+    </div>
+
+    <div class="price-card featured reveal">
+      <h3>FAMILY</h3>
+      <div class="price">£9.99<span> / year</span></div>
+      <div class="price-note">or £1.99 / month · Save 17%</div>
+      <ul class="price-features">
+        <li>Everything in Free</li>
+        <li>Up to 3 diver profiles</li>
+        <li>Full session history</li>
+        <li>Training journal</li>
+        <li>Achievements &amp; medals</li>
+        <li>Competition results (coming soon)</li>
+      </ul>
+      <a href="#" class="price-cta primary">Get Family</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOR COACHES ═══ -->
+<section class="coaches" id="coaches">
+  <div class="section-label reveal">For Coaches &amp; Clubs</div>
+  <h2 class="section-title reveal">Your Clipboard, Upgraded</h2>
+  <p class="coaches-body reveal">
+    The competition scorer is completely free — no limits, no sign-up. Run club championships, training comps, or fun meets with live scoring poolside. Just add divers, pick your board, and go.
+  </p>
+  <div class="coaches-highlight reveal">
+    Live-scoring ready in under 2 minutes
+  </div>
+  <p class="coaches-body reveal" style="margin-top: 40px; font-size: 15px;">
+    Coach and club tools are coming. Want early access?<br>
+    <a href="mailto:griffithscolin@mac.com?subject=Coach%20Interest%20—%20Dive%20Entry" style="color: var(--teal); text-decoration: none; font-weight: 500;">Get in touch →</a>
+  </p>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-logo">DIVE ENTRY</div>
+  <div class="footer-links">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#coaches">For Coaches</a>
+    <a href="mailto:griffithscolin@mac.com">Support</a>
+    <a href="mailto:griffithscolin@mac.com">Contact</a>
+  </div>
+  <div class="footer-copy">
+    &copy; 2026 Dive Entry. All rights reserved.<br>
+    <span style="opacity: 0.6;">Made poolside in Sheffield.</span>
+  </div>
+</footer>
+
+<!-- ═══ Scroll Reveal ═══ -->
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
