@@ -99,13 +99,19 @@
   }
 
   .hero h1 {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: clamp(48px, 8vw, 80px);
-    font-weight: 700;
-    letter-spacing: 6px;
-    line-height: 1;
-    margin-bottom: 12px;
+    font-size: 0;
+    line-height: 0;
+    letter-spacing: normal;
+    margin: 0 auto 12px;
+    padding: 0;
+    width: 100%;
+    max-width: 520px;
     animation: fadeUp 0.6s ease 0.15s both;
+  }
+  .hero h1 svg {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 
   .hero-tagline {
@@ -454,7 +460,47 @@
     </svg>
   </div>
 
-  <h1>DIVE ENTRY</h1>
+  <h1>
+    <svg viewBox="0 0 600 180" role="img" aria-label="Dive Entry" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <title>Dive Entry</title>
+
+      <!-- Diving board L-bracket: top horizontal bar -->
+      <!-- Left cap (darker blue) -->
+      <rect x="18" y="26" width="44" height="18" fill="#1B6B93"/>
+      <!-- Main bar (teal) -->
+      <rect x="62" y="26" width="510" height="14" fill="#00D4AA" opacity="0.9"/>
+      <!-- Accent underline (blue) -->
+      <rect x="62" y="40" width="510" height="4" fill="#1B6B93" opacity="0.65"/>
+
+      <!-- Diving board L-bracket: vertical leg + foot -->
+      <rect x="18" y="26" width="22" height="96" fill="#1B6B93"/>
+      <!-- Inner teal stripe on leg -->
+      <rect x="40" y="30" width="4" height="88" fill="#00D4AA" opacity="0.55"/>
+      <!-- Foot / base -->
+      <rect x="18" y="118" width="34" height="8" fill="#1B6B93"/>
+
+      <!-- DIVE ENTRY text -->
+      <text x="72" y="108"
+            font-family="Rajdhani, 'Segoe UI', sans-serif"
+            font-weight="700"
+            letter-spacing="5"
+            font-size="78"
+            fill="#FFFFFF">DIVE ENTRY</text>
+
+      <!-- Water waves beneath -->
+      <path d="M25,150 Q150,138 295,150 T580,150"
+            fill="none"
+            stroke="#1B6B93"
+            stroke-width="3.5"
+            stroke-linecap="round"/>
+      <path d="M25,162 Q150,150 295,162 T580,162"
+            fill="none"
+            stroke="#00D4AA"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            opacity="0.75"/>
+    </svg>
+  </h1>
   <div class="hero-tagline">Score · Track · Compete</div>
   <p class="hero-subtitle">
     The essential companion for competitive springboard and platform divers, their families, and coaches.
